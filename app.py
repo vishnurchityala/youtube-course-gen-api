@@ -36,8 +36,11 @@ text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=15
 
 @app.route('/')
 def home():
-    return "Hello, Vercel!"
+    response = '''Response Generation API - V1 : The Response Generation API enables the creation of formal courses 
+    using custom resources provided by instructors or users. It integrates with a vector database to manage resource 
+    embeddings and employs AI to generate relevant prompts and responses based on these resources.'''
 
+    return jsonify({'response': response})
 
 @app.route('/api/v1', methods=['GET'])
 def get_api_info():
