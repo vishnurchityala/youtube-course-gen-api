@@ -33,6 +33,20 @@ embeddings = GoogleGenerativeAIEmbeddings(google_api_key=gemini_api_key, model="
 # Text-Splitter
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=150)
 
+def extract_video_id(url):
+    # Find the position of 'v=' in the URL
+    video_id_start = url.find('v=') + 2
+    # The video ID is typically 11 characters long
+    video_id_end = video_id_start + 11
+
+    # Extract the video ID using slicing
+    video_id = url[video_id_start:video_id_end]
+
+    # Ensure the extracted video ID is valid
+    if '&' in video_id:
+        video_id = video_id.split('&')[0]
+
+    return video_id
 
 @app.route('/')
 def home():
@@ -61,6 +75,8 @@ def create_video_chat(chatId):
     data = request.get_json()
     source_url = data.get("source_url")
 
+    video_id = extract_video_id(source_url)
+
     # Inserting Vectors in Vector Database
     vectors = []
     source_transcript = transcriptor.get_transcript_from_youtube_with_url(source_url)
@@ -68,7 +84,7 @@ def create_video_chat(chatId):
     count = 1
     for split in splits:
         embedding = embeddings.embed_query(split)
-        vector_name = str(chatId) + " " + str(count)
+        vector_name = str(video_id) + "-" + str(count)
         vector_source = source_url
         vectors.append((vector_name, embedding, {"vector_source": vector_source, "text_chunk": split}))
         count += 1
@@ -91,23 +107,20 @@ def update_video_chat(chatId):
     data = request.get_json()
     source_url = data.get("source_url")
 
-    # Initialize PineconeVectorStore
-    vectorstore = PineconeVectorStore(index=index, embedding=embeddings,
-                                      namespace=chat_namespace, text_key="text_chunk")
 
     try:
-        # Delete vectors
-        vectorstore.delete(delete_all=True)
 
         # Fetch and split the transcript
         source_transcript = transcriptor.get_transcript_from_youtube_with_url(source_url)
         splits = text_splitter.split_text(source_transcript)
 
+        video_id = extract_video_id(source_url)
+
         vectors = []
         count = 1
         for split in splits:
             embedding = embeddings.embed_query(split)
-            vector_name = str(chatId) + " " + str(count)
+            vector_name = str(video_id) + "-" + str(count)
             vector_source = source_url
             vectors.append((vector_name, embedding, {"vector_source": vector_source, "text_chunk": split}))
             count += 1
