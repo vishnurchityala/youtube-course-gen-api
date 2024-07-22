@@ -33,6 +33,7 @@ embeddings = GoogleGenerativeAIEmbeddings(google_api_key=gemini_api_key, model="
 # Text-Splitter
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=150)
 
+
 def extract_video_id(url):
     # Find the position of 'v=' in the URL
     video_id_start = url.find('v=') + 2
@@ -48,6 +49,7 @@ def extract_video_id(url):
 
     return video_id
 
+
 @app.route('/')
 def home():
     response = '''Response Generation API - V1 : The Response Generation API enables the creation of formal courses 
@@ -55,6 +57,7 @@ def home():
     embeddings and employs AI to generate relevant prompts and responses based on these resources.'''
 
     return jsonify({'response': response})
+
 
 @app.route('/api/v1', methods=['GET'])
 def get_api_info():
@@ -96,46 +99,6 @@ def create_video_chat(chatId):
     response = "Added Chat with namespace : " + chat_namespace + " Vector Count : " + str(count - 1)
 
     return jsonify({'response': response})
-
-
-@app.route('/api/v1/video-chats/<int:chatId>', methods=['PUT'])
-def update_video_chat(chatId):
-    # Namespace for the chat
-    chat_namespace = "chat-" + str(chatId)
-
-    # Fetching data from payload
-    data = request.get_json()
-    source_url = data.get("source_url")
-
-
-    try:
-
-        # Fetch and split the transcript
-        source_transcript = transcriptor.get_transcript_from_youtube_with_url(source_url)
-        splits = text_splitter.split_text(source_transcript)
-
-        video_id = extract_video_id(source_url)
-
-        vectors = []
-        count = 1
-        for split in splits:
-            embedding = embeddings.embed_query(split)
-            vector_name = str(video_id) + "-" + str(count)
-            vector_source = source_url
-            vectors.append((vector_name, embedding, {"vector_source": vector_source, "text_chunk": split}))
-            count += 1
-
-        # Insert vectors into Pinecone
-        index.upsert(
-            vectors=vectors,
-            namespace=chat_namespace
-        )
-
-        response_message = f"Updated Chat with namespace: {chat_namespace} Vector Count: {count - 1}"
-        return jsonify({"response": response_message}), 200
-
-    except Exception as e:
-        return jsonify({"Video Chat Not Found": str(e)}), 404
 
 
 @app.route('/api/v1/video-chats/<int:chatId>', methods=['DELETE'])
