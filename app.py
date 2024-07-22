@@ -34,6 +34,11 @@ embeddings = GoogleGenerativeAIEmbeddings(google_api_key=gemini_api_key, model="
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=150)
 
 
+@app.route('/')
+def home():
+    return "Hello, Vercel!"
+
+
 @app.route('/api/v1', methods=['GET'])
 def get_api_info():
     response = '''Response Generation API - V1 : The Response Generation API enables the creation of formal courses 
@@ -138,12 +143,12 @@ def delete_video_chat(chatId):
         return jsonify({"Video Chat Not Found": str(e)}), 404
 
 
-@app.route('/api/v1/video-chats/<int:chatId>/prompt',methods=['GET'])
+@app.route('/api/v1/video-chats/<int:chatId>/prompt', methods=['GET'])
 def get_response_chat(chatId):
     # Fetching prompt the request body
     data = request.get_json()
     prompt = data.get('prompt')
-    chat_namespace = "chat-"+str(chatId)
+    chat_namespace = "chat-" + str(chatId)
     # Generating Prompt
     prompt_response = response_generator.get_response(
         namespace=chat_namespace,
@@ -153,8 +158,8 @@ def get_response_chat(chatId):
         gemini_api_key=gemini_api_key
     )
 
-    return jsonify({"response":prompt_response}),200
+    return jsonify({"response": prompt_response}), 200
 
 
-if __name__ == "__main__":
-    app.run(port=8000, debug=True, host='0.0.0.0')
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
