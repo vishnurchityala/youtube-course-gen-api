@@ -140,6 +140,20 @@ def get_response_chat(chatId):
 
     return jsonify(prompt_response), 200
 
+@app.route('/api/va/video-chats/<int:chatId>',methods=['DELETE'])
+def delete_vectors_from_chat(chatId):
+    data = request.get_json()
+    source_url = data.get("sourceUrl")
+    source_id = extract_video_id(source_url)
+    chat_namespace = "chat-"+str(chatId)
+
+    ids = index.list(prefix=source_id, limit=5, namespace=chat_namespace)
+    while len(ids) != 0:
+        index.delete(ids=ids, namespace=chat_namespace)
+        ids = index.list(prefix=source_id, limit=5, namespace=chat_namespace)
+
+    return "Deleted Source : " +source_url
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
