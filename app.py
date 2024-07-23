@@ -76,7 +76,7 @@ def create_video_chat(chatId):
 
     # Fetching data form payload
     data = request.get_json()
-    source_url = data.get("source_url")
+    source_url = data.get("sourceUrl")
 
     video_id = extract_video_id(source_url)
 
