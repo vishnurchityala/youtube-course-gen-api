@@ -127,6 +127,7 @@ def get_response_chat(chatId):
     # Fetching prompt the request body
     data = request.get_json()
     prompt = data.get('prompt')
+    prompt += ". keep it less than 65535 characters."
     chat_namespace = "chat-" + str(chatId)
     # Generating Prompt
     prompt_response = response_generator.get_response(
