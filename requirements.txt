@@ -16,6 +16,8 @@ google-api-core==2.19.1
 google-api-python-client==2.137.0
 google-auth==2.32.0
 google-auth-httplib2==0.2.0
+google-cloud-core==2.4.1
+google-cloud-translate==3.15.4
 google-generativeai==0.7.2
 googleapis-common-protos==1.63.2
 grpcio==1.65.1
@@ -24,6 +26,7 @@ httplib2==0.22.0
 idna==3.7
 itsdangerous==2.2.0
 Jinja2==3.1.4
+joblib==1.4.2
 jsonpatch==1.33
 jsonpointer==3.0.0
 langchain==0.2.9
@@ -33,10 +36,13 @@ langchain-google-genai==1.0.7
 langchain-pinecone==0.1.2
 langchain-text-splitters==0.2.2
 langsmith==0.1.90
+libretranslatepy==2.1.1
+lxml==5.2.2
 MarkupSafe==2.1.5
 marshmallow==3.21.3
 multidict==6.0.5
 mypy-extensions==1.0.0
+nltk==3.8.1
 numpy==1.26.4
 orjson==3.10.6
 packaging==24.1
@@ -52,11 +58,14 @@ pydantic_core==2.20.1
 pyparsing==3.1.2
 pytube==15.0.0
 PyYAML==6.0.1
+regex==2024.5.15
 requests==2.32.3
 rsa==4.9
 SQLAlchemy==2.0.31
 tenacity==8.5.0
+textblob==0.18.0.post0
 tqdm==4.66.4
+translate==3.6.1
 typing-inspect==0.9.0
 typing_extensions==4.12.2
 uritemplate==4.1.1

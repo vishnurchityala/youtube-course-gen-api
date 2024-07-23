@@ -1,5 +1,6 @@
 from langchain_community.document_loaders import YoutubeLoader
 from langchain_core.exceptions import LangChainException
+from translate import Translator
 
 
 def get_transcript_from_youtube_with_url(video_url):
@@ -24,7 +25,9 @@ def get_transcript_from_youtube_with_url(video_url):
     ]
 
     translations = ["en", "hi", "bn", "te", "mr", "ta", "gu", "kn", "ml", "pa", "as", "or", "sd", "ur", "ne", "ks",
-                    "kok", "doi", "mni", "sit", "sa"]
+                    "kok", "doi", "mni", "sit", "sa", "ar", "bg", "ca", "cs", "da", "de", "el", "es", "et", "fa",
+                    "fi", "fr", "he", "hr", "hu", "id", "it", "ja", "ko", "lt", "lv", "ms", "nl", "no", "pl",
+                    "pt", "ro", "ru", "sk", "sl", "sr", "sv", "th", "tr", "uk", "vi", "zh-Hans", "zh-Hant"]
 
     for translation in translations:
         try:
@@ -38,6 +41,9 @@ def get_transcript_from_youtube_with_url(video_url):
             documents = loader.load()
             transcripts = "\n".join([doc.page_content for doc in documents if doc.page_content])
             if transcripts:
+                if translation != "en":
+                    translator = Translator(from_lang=translation, to_lang="en")
+                    transcripts = translator.translate(transcripts)
                 return transcripts
 
         except LangChainException:
