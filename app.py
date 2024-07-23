@@ -137,7 +137,7 @@ def get_response_chat(chatId):
         gemini_api_key=gemini_api_key
     )
 
-    return jsonify({"response": prompt_response}), 200
+    return jsonify(prompt_response), 200
 
 
 if __name__ == '__main__':
