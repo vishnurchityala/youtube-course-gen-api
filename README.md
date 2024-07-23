@@ -1,4 +1,4 @@
-# YouTube Video Chatbot API
+# YouTube Course Generation AP
 
 This project creates a Flask API that leverages LangChain, Google's Gemini AI, and Pinecone to store and interact with YouTube video data. Users can provide YouTube video URLs, which are then transcribed, stored, and used to interact with via chat prompts.
 
