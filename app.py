@@ -122,7 +122,7 @@ def delete_video_chat(chatId):
         return jsonify({"Video Chat Not Found": str(e)}), 404
 
 
-@app.route('/api/v1/video-chats/<int:chatId>/prompt', methods=['GET'])
+@app.route('/api/v1/video-chats/<int:chatId>/prompt', methods=['POST'])
 def get_response_chat(chatId):
     # Fetching prompt the request body
     data = request.get_json()
