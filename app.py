@@ -140,7 +140,7 @@ def get_response_chat(chatId):
 
     return jsonify(prompt_response), 200
 
-@app.route('/api/va/video-chats/<int:chatId>',methods=['DELETE'])
+@app.route('/api/v1/video-chats/<int:chatId>/source',methods=['DELETE'])
 def delete_vectors_from_chat(chatId):
     data = request.get_json()
     source_url = data.get("sourceUrl")
