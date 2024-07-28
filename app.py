@@ -25,7 +25,8 @@ gemini_api_key = "AIzaSyBpo8Y4D-vpHmZyp0NTr8XC7q08qdc6Y0Q"
 pinecone_client = pinecone.Pinecone(api_key=pinecone_api_key)
 
 # Creating Index
-index = pinecone_client.Index(host="https://youtube-course-gen-00zocgp.svc.aped-4627-b74a.pinecone.io")
+# index = pinecone_client.Index(host="https://youtube-course-gen-00zocgp.svc.aped-4627-b74a.pinecone.io")
+index = pinecone_client.Index(name="youtube-course-gen")
 
 # Generating Embeddings
 embeddings = GoogleGenerativeAIEmbeddings(google_api_key=gemini_api_key, model="models/embedding-001")
